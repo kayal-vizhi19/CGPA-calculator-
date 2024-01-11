@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass/Fail Checker & CGPA Calculator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Pass/Fail Checker & CGPA Calculator</h2>
+
+    <form id="studentForm">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" required><br><br>
+
+    <label for="regNo">Registration Number:</label>
+        <input type="text" id="regNo" required><br><br> <!-- Added line -->
+
+        <label for="marks">Total Marks:</label>
+        <input type="number" id="marks" min="0" required><br><br>
+
+        <label for="sub1">Subject 1 Marks:</label>
+        <input type="number" id="sub1" min="0" max="100" required><br><br>
+
+        <label for="sub2">Subject 2 Marks:</label>
+        <input type="number" id="sub2" min="0" max="100" required><br><br>
+
+        <label for="sub3">Subject 3 Marks:</label>
+        <input type="number" id="sub3" min="0" max="100" required><br><br>
+
+        <button type="button" onclick="checkPassFail()">Check Pass/Fail</button>
+        <button type="button" onclick="calculateCGPA()">Calculate CGPA</button>
+
+        <table id="resultTable">
+            <tr>
+                <th>Student Name</th>
+                <th>Regester number</th>
+                <th>Total Marks</th>
+                <th>Subject 1 Marks</th>
+                <th>Subject 2 Marks</th>
+                <th>Subject 3 Marks</th>
+                <th>Result</th>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        function checkPassFail() {
+            // Get input values
+            var studentName = document.getElementById("studentName").value;
+            var totalMarks = parseFloat(document.getElementById("marks").value);
+            var sub1 = parseFloat(document.getElementById("sub1").value);
+            var sub2 = parseFloat(document.getElementById("sub2").value);
+            var sub3 = parseFloat(document.getElementById("sub3").value);
+
+            // Validate input
+            if (isNaN(totalMarks) || isNaN(sub1) || isNaN(sub2) || isNaN(sub3)) {
+                alert("Please enter valid marks for all fields");
+                return;
+            }
+
+            // Calculate total marks in subjects
+            var totalSubjectMarks = sub1 + sub2 + sub3;
+            var result = (totalMarks >= 150 && totalSubjectMarks >= 50) ? "Pass" : "Fail";
+
+            // Append result to the table
+            appendResultToTable(studentName, totalMarks, sub1, sub2, sub3, result);
+        }
+
+        function calculateCGPA() {
+            // Get input values
+            var studentName = document.getElementById("studentName").value;
+            var sub1 = parseFloat(document.getElementById("sub1").value);
+            var sub2 = parseFloat(document.getElementById("sub2").value);
+            var sub3 = parseFloat(document.getElementById("sub3").value);
+
+            // Validate input
+            if (isNaN(sub1) || isNaN(sub2) || isNaN(sub3)) {
+                alert("Please enter valid marks for all subjects");
+                return;
+            }
+
+            // Calculate CGPA
+            var totalMarks = sub1 + sub2 + sub3;
+            var cgpa = totalMarks / 3;
+
+            // Append CGPA result to the table
+            appendResultToTable(studentName, totalMarks, sub1, sub2, sub3, "CGPA: " + cgpa.toFixed(2));
+        }
+
+        function appendResultToTable(name, totalMarks, sub1, sub2, sub3, result) {
+            var table = document.getElementById("resultTable");
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+
+            cell1.innerHTML = name;
+            cell2.innerHTML = totalMarks;
+            cell3.innerHTML = sub1;
+            cell4.innerHTML = sub2;
+            cell5.innerHTML = sub3;
+            cell6.innerHTML = result;
+        }
+    </script>
+
+</body>
+</html>
